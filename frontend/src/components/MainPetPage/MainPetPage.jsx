@@ -13,12 +13,12 @@ const MainPetPage = () => {
     try {
       let data;
       if (id) {
-        const response = await fetch(`https://petlisting-internship-1.onrender.com/api/breeds/${id}`);
+        const response = await fetch(`https://petlisting.onrender.com/api/breeds/${id}`);
         data = await response.json();
       } else {
-        const response = await fetch(`https://petlisting-internship-1.onrender.com/api/breeds`);
+        const response = await fetch(`https://petlisting.onrender.com/api/breeds`);
         data = await response.json();
-        data = data[0]; // show the first pet as default
+        data = data[0]; 
       }
       setBreed(data);
     } catch (error) {

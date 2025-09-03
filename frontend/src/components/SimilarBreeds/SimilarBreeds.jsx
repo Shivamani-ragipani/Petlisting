@@ -10,7 +10,7 @@ const SimilarBreeds = () => {
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const response = await fetch("https://petlisting-internship-1.onrender.com/api/breeds");
+        const response = await fetch("https://petlisting.onrender.com/api/breeds");
         const data = await response.json();
         setPets(data);
       } catch (error) {
