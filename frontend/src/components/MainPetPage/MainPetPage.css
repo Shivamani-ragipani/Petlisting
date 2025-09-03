@@ -1,0 +1,442 @@
+.main-pet-page {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding: 24px 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.pet-content {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 32px;
+}
+
+.left-column {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pet-header {
+  margin-bottom: 24px;
+}
+
+.pet-name {
+  font-size: 32px;
+  font-weight: 700;
+  color: #212529;
+  margin-bottom: 8px;
+}
+
+.pet-location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.location-text {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.status-badge {
+  display: inline-block;
+  background: #d4edda;
+  color: #155724;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.pet-image-section {
+  margin-bottom: 32px;
+  width: 100%;
+  position: relative;
+}
+
+.pet-image-placeholder {
+  width: 100%;
+  height: 300px;
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden; 
+}
+
+.pet-image-placeholder.has-image {
+  border: none;
+  background: transparent;
+}
+
+.pet-image-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  border-radius: 8px;
+}
+
+.heart-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  color: #FF6B35;
+  fill: #FF6B35;
+}
+
+.pet-image-placeholder span {
+  color: #6c757d;
+  font-size: 16px;
+}
+
+.price-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.price-tag {
+  background: #FF6B35;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.post-date {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.identifications,
+.breed-info,
+.owner-details {
+  margin-bottom: 32px;
+}
+
+.identifications h3,
+.breed-info h3,
+.owner-details h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 12px;
+}
+
+.identifications p {
+  color: #6c757d;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.breed-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.breed-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.breed-label {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.breed-value {
+  color: #212529;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.owner-info {
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.owner-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 4px;
+}
+
+.owner-location {
+  color: #6c757d;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.verification-badges {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.verified-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.verified-badge.phone {
+  background: #d4edda;
+  color: #155724;
+}
+
+.verified-badge.email {
+  background: #d4edda;
+  color: #155724;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.report-btn,
+.block-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid;
+  cursor: pointer;
+}
+
+.report-btn {
+  background: white;
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.block-btn {
+  background: white;
+  color: #6c757d;
+  border-color: #6c757d;
+}
+
+.share-section {
+  background: white;
+  padding: 16px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.share-text {
+  font-size: 14px;
+  color: #212529;
+  font-weight: 500;
+}
+
+.share-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.share-icon {
+  width: 24px;
+  height: 24px;
+  color: #6c757d;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.share-icon:hover {
+  color: #FF6B35;
+}
+
+.share-icon.facebook {
+  color: #1877f2;
+}
+
+.share-icon.whatsapp {
+  color: #25d366;
+}
+
+.basic-info,
+.additional-info,
+.about-section,
+.interest-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.basic-info h3,
+.additional-info h3,
+.about-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 16px;
+}
+
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.info-value {
+  color: #212529;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.additional-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.additional-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.check-icon {
+  width: 16px;
+  height: 16px;
+  color: #28a745;
+}
+
+.cross-icon {
+  width: 16px;
+  height: 16px;
+  color: #dc3545;
+  margin-left: auto;
+  margin-right: 8px;
+}
+
+.about-content {
+  line-height: 1.6;
+  color: #495057;
+  font-size: 14px;
+}
+
+.about-content p {
+  margin-bottom: 12px;
+}
+
+.highlight {
+  color: #FF6B35;
+  font-weight: 600;
+}
+
+.read-more {
+  color: #FF6B35;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.interest-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.interest-text {
+  font-size: 14px;
+  color: #212529;
+  font-weight: 500;
+}
+
+.message-btn {
+  background: #FF6B35;
+  color: white;
+  padding: 8px 24px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.message-btn:hover {
+  background: #e55a2b;
+}
+
+/* Loading spinner styles */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #f3f3f3; /* Light gray */
+  border-top: 6px solid #FF6B35; /* Accent color */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+@media (max-width: 768px) {
+  .pet-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .container {
+    padding: 0 16px;
+  }
+}

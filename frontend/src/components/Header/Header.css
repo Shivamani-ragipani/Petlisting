@@ -1,0 +1,48 @@
+.header {
+  background-color: #f8f9fa;
+  padding: 16px 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.back-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.back-icon {
+  width: 20px;
+  height: 20px;
+  color: #6c757d;
+}
+
+.back-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #212529;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.separator {
+  color: #adb5bd;
+}
+
+.current {
+  color: #212529;
+  font-weight: 500;
+}
