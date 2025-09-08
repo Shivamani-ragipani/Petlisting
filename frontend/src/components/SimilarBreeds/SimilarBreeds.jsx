@@ -11,10 +11,10 @@ const SimilarBreeds = () => {
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const response = await fetch("/api/breeds");
+        const response = await fetch(`${process.env.REACT_APP_API_URL || ""}/api/breeds`);
         if (!response.ok) throw new Error("Failed to fetch pets");
         const data = await response.json();
-        setPets(data);
+        setPets(data || []);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -24,7 +24,6 @@ const SimilarBreeds = () => {
     fetchPets();
   }, []);
 
-  // Loading skeleton UI
   if (loading) {
     return (
       <div className="similar-breeds">
@@ -44,7 +43,6 @@ const SimilarBreeds = () => {
     );
   }
 
-  // Error UI
   if (error) {
     return (
       <div className="similar-breeds">
@@ -70,49 +68,43 @@ const SimilarBreeds = () => {
         ) : (
           <div className="breeds-grid">
             {pets.map((pet) => {
-
-              const petImage = pet.images?.length ? pet.images[0] : null;
-
-              const petAge = pet.basicInfo?.age || "N/A";
-              const petGender = pet.basicInfo?.gender || "Unknown";
+              const petImage = pet?.images?.length ? pet.images[0] : null;
+              const petAge = pet?.basicInfo?.age || "N/A";
+              const petGender = pet?.basicInfo?.gender || "Unknown";
+              const petLocation = pet?.location || "Unknown";
+              const petPrice = pet?.price
+                ? new Intl.NumberFormat("en-IN", {
+                    style: "currency",
+                    currency: "INR",
+                  }).format(pet.price)
+                : "N/A";
+              const postDate = pet?.postDate
+                ? new Date(pet.postDate).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })
+                : "N/A";
 
               return (
-                <div key={pet._id} className="breed-card">
+                <div key={pet?._id || pet?.id} className="breed-card">
                   <div className="card-header">
                     <Heart className="heart-icon-card" />
                   </div>
-                  <div
-                    className={`pet-image-card ${petImage ? "has-image" : ""}`}
-                  >
-                    {petImage ? (
-                      <img src={petImage} alt={pet.name} />
-                    ) : (
-                      <span>No Image</span>
-                    )}
+                  <div className={`pet-image-card ${petImage ? "has-image" : ""}`}>
+                    {petImage ? <img src={petImage} alt={pet.name || "Pet"} /> : <span>No Image</span>}
                   </div>
                   <div className="card-content">
-                    <h4 className="pet-name-card">{pet.name}</h4>
+                    <h4 className="pet-name-card">{pet?.name || "Unknown"}</h4>
                     <p className="pet-age">
                       {petAge}, {petGender}
                     </p>
                     <div className="pet-location-card">
                       <MapPin className="location-icon" />
-                      <span>{pet.location}</span>
+                      <span>{petLocation}</span>
                     </div>
-                    <p className="pet-price">
-                      {new Intl.NumberFormat("en-IN", {
-                        style: "currency",
-                        currency: "INR",
-                      }).format(pet.price)}
-                    </p>
-                    <p className="post-date">
-                      Posted on{" "}
-                      {new Date(pet.postDate).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </p>
+                    <p className="pet-price">{petPrice}</p>
+                    <p className="post-date">Posted on {postDate}</p>
                   </div>
                 </div>
               );
