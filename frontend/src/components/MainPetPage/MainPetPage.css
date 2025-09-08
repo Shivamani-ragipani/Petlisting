@@ -10,6 +10,46 @@
   padding: 0 24px;
 }
 
+
+.No-breed-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;    
+  height: 60vh;         
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.No-breed-data p,
+.No-breed-data span {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.No-breed-data button {
+  background-color: #FF6B35;
+  color: #fff;
+  border: none;
+  padding: 10px 25px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.No-breed-data button:hover {
+  background-color: #FF6B35;
+  transform: scale(1.05);
+}
+
+
+
 .pet-content {
   display: grid;
   grid-template-columns: 1fr 400px;
@@ -18,9 +58,14 @@
 
 .left-column {
   background: white;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+.left-column:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .right-column {
@@ -73,12 +118,13 @@
   height: 300px;
   background: #f8f9fa;
   border: 2px dashed #dee2e6;
-  border-radius: 8px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden; 
+  transition: border 0.3s ease, background 0.3s ease;
 }
 
 .pet-image-placeholder.has-image {
@@ -90,7 +136,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover; 
-  border-radius: 8px;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.pet-image-placeholder img:hover {
+  transform: scale(1.02);
 }
 
 .heart-icon {
@@ -101,6 +152,12 @@
   height: 24px;
   color: #FF6B35;
   fill: #FF6B35;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.heart-icon:hover {
+  transform: scale(1.1);
 }
 
 .pet-image-placeholder span {
@@ -119,9 +176,14 @@
   background: #FF6B35;
   color: white;
   padding: 8px 16px;
-  border-radius: 4px;
+  border-radius: 6px;
   font-weight: 600;
   font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.price-tag:hover {
+  background: #e55a2b;
 }
 
 .post-date {
@@ -161,6 +223,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 8px 0;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.breed-item:last-child {
+  border-bottom: none;
 }
 
 .breed-label {
@@ -178,6 +245,9 @@
   padding: 16px;
   background: #f8f9fa;
   border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .owner-name {
@@ -190,20 +260,36 @@
 .owner-location {
   color: #6c757d;
   font-size: 14px;
-  margin-bottom: 12px;
 }
 
 .verification-badges {
   display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
+  justify-content: flex-end;
 }
 
 .verified-badge {
-  padding: 4px 8px;
+  padding: 4px 10px;
   border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
+   text-transform: uppercase;
+  transition: transform 0.2s ease;
+}
+
+.verified-badge.verified {
+  background-color: #d4f8d4;
+  color: #0f9d0f;
+  border: 1px solid #0f9d0f;
+}
+
+.verified-badge.unverified {
+  background-color: #fddddd;
+  color: #d93025;
+  border: 1px solid #d93025;
+}
+
+.verified-badge:hover {
+  transform: scale(1.05);
 }
 
 .verified-badge.phone {
@@ -219,16 +305,18 @@
 .action-buttons {
   display: flex;
   gap: 12px;
+  margin-top: 16px;
 }
 
 .report-btn,
 .block-btn {
   padding: 6px 12px;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 12px;
   font-weight: 500;
   border: 1px solid;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .report-btn {
@@ -237,10 +325,20 @@
   border-color: #dc3545;
 }
 
+.report-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
 .block-btn {
   background: white;
   color: #6c757d;
   border-color: #6c757d;
+}
+
+.block-btn:hover {
+  background: #6c757d;
+  color: white;
 }
 
 .share-section {
@@ -269,11 +367,12 @@
   height: 24px;
   color: #6c757d;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: color 0.2s, transform 0.2s ease;
 }
 
 .share-icon:hover {
   color: #FF6B35;
+  transform: scale(1.1);
 }
 
 .share-icon.facebook {
@@ -292,6 +391,14 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.basic-info:hover,
+.additional-info:hover,
+.about-section:hover,
+.interest-section:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .basic-info h3,
@@ -397,17 +504,17 @@
   color: white;
   padding: 8px 24px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.2s ease;
 }
 
 .message-btn:hover {
   background: #e55a2b;
+  transform: scale(1.05);
 }
 
-/* Loading spinner styles */
 .loading-container {
   display: flex;
   justify-content: center;
@@ -418,8 +525,8 @@
 .spinner {
   width: 60px;
   height: 60px;
-  border: 6px solid #f3f3f3; /* Light gray */
-  border-top: 6px solid #FF6B35; /* Accent color */
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #FF6B35;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -429,7 +536,6 @@
   100% { transform: rotate(360deg); }
 }
 
-
 @media (max-width: 768px) {
   .pet-content {
     grid-template-columns: 1fr;
@@ -438,5 +544,25 @@
   
   .container {
     padding: 0 16px;
+  }
+
+  .pet-name {
+    font-size: 24px;
+  }
+
+  .price-tag {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .owner-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .action-buttons {
+    width: 100%;
+    justify-content: space-between;
   }
 }

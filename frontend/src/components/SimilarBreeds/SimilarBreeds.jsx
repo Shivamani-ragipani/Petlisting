@@ -5,16 +5,18 @@ import "./SimilarBreeds.css";
 const SimilarBreeds = () => {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Fetch pets from backend
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const response = await fetch("https://petlisting.onrender.com/api/breeds");
+        const response = await fetch("/api/breeds");
+        if (!response.ok) throw new Error("Failed to fetch pets");
         const data = await response.json();
         setPets(data);
-      } catch (error) {
-        console.error("Error fetching pets:", error);
+      } catch (err) {
+        setError(err.message);
       } finally {
         setLoading(false);
       }
@@ -22,13 +24,39 @@ const SimilarBreeds = () => {
     fetchPets();
   }, []);
 
+  // Loading skeleton UI
   if (loading) {
-  return (
-    <div className="main-pet-page loading-container">
-      <div className="spinner"></div>
-    </div>
-  );
-}
+    return (
+      <div className="similar-breeds">
+        <div className="container">
+          <h2 className="section-title">
+            Similar <span className="highlight">Pet Breeds</span>
+          </h2>
+          <div className="breeds-grid">
+            {Array(6)
+              .fill()
+              .map((_, i) => (
+                <div key={i} className="breed-card skeleton"></div>
+              ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error UI
+  if (error) {
+    return (
+      <div className="similar-breeds">
+        <div className="container">
+          <h2 className="section-title">
+            Similar <span className="highlight">Pet Breeds</span>
+          </h2>
+          <p className="error-message">⚠️ {error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="similar-breeds">
@@ -36,34 +64,61 @@ const SimilarBreeds = () => {
         <h2 className="section-title">
           Similar <span className="highlight">Pet Breeds</span>
         </h2>
-        <div className="breeds-grid">
-          {pets.map((pet) => (
-            <div key={pet.id} className="breed-card">
-              <div className="card-header">
-                <Heart className="heart-icon-card" />
-              </div>
-              <div className={`pet-image-card ${pet.image ? "has-image" : ""}`}>
-                {pet.image ? (
-                  <img src={pet.image} alt={pet.name} />
-                ) : (
-                  <span>Pet Image</span>
-                )}
-              </div>
-              <div className="card-content">
-                <h4 className="pet-name-card">{pet.name}</h4>
-                <p className="pet-age">
-                  {pet.age}, {pet.gender}
-                </p>
-                <div className="pet-location-card">
-                  <MapPin className="location-icon" />
-                  <span>{pet.location}</span>
+
+        {pets.length === 0 ? (
+          <p className="empty-message">No similar breeds found 🐶</p>
+        ) : (
+          <div className="breeds-grid">
+            {pets.map((pet) => {
+
+              const petImage = pet.images?.length ? pet.images[0] : null;
+
+              const petAge = pet.basicInfo?.age || "N/A";
+              const petGender = pet.basicInfo?.gender || "Unknown";
+
+              return (
+                <div key={pet._id} className="breed-card">
+                  <div className="card-header">
+                    <Heart className="heart-icon-card" />
+                  </div>
+                  <div
+                    className={`pet-image-card ${petImage ? "has-image" : ""}`}
+                  >
+                    {petImage ? (
+                      <img src={petImage} alt={pet.name} />
+                    ) : (
+                      <span>No Image</span>
+                    )}
+                  </div>
+                  <div className="card-content">
+                    <h4 className="pet-name-card">{pet.name}</h4>
+                    <p className="pet-age">
+                      {petAge}, {petGender}
+                    </p>
+                    <div className="pet-location-card">
+                      <MapPin className="location-icon" />
+                      <span>{pet.location}</span>
+                    </div>
+                    <p className="pet-price">
+                      {new Intl.NumberFormat("en-IN", {
+                        style: "currency",
+                        currency: "INR",
+                      }).format(pet.price)}
+                    </p>
+                    <p className="post-date">
+                      Posted on{" "}
+                      {new Date(pet.postDate).toLocaleDateString("en-GB", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
                 </div>
-                <p className="pet-price">{pet.price}</p>
-                <p className="post-date">Posted on {pet.postDate}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
