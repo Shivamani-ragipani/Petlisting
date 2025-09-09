@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Heart, Link as LinkIcon, Facebook, MessageCircle, Check } from "lucide-react";
+import {
+  Heart,
+  Link as LinkIcon,
+  Facebook,
+  MessageCircle,
+  Check,
+} from "lucide-react";
 import { useParams } from "react-router-dom";
 import "./MainPetPage.css";
 import SimilarBreeds from "../SimilarBreeds/SimilarBreeds";
@@ -10,32 +16,53 @@ const MainPetPage = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    const fetchBreed = async () => {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL || ""}/api/breeds`);
-        const data = await response.json();
+  let isMounted = true; 
+  const controller = new AbortController();
 
-        if (!data || data.length === 0) {
-          setBreed(null);
-          return;
-        }
+  async function fetchBreedData() {
+    setLoading(true);
 
-        if (id) {
-          const breedData = data.find((b) => b._id === id) || data.find((b) => b.id?.toString() === id.toString());
-          setBreed(breedData || null);
-        } else {
-          setBreed(data[0]);
-        }
-      } catch (error) {
-        console.error("Error fetching breed:", error);
-        setBreed(null);
-      } finally {
-        setLoading(false);
+    try {
+      const response = await fetch("/api/breeds", { signal: controller.signal });
+
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    };
 
-    fetchBreed();
-  }, [id]);
+      const data = await response.json();
+
+      if (!isMounted || !Array.isArray(data) || data.length === 0) {
+        setBreed(null);
+        return;
+      }
+
+      // Find breed by `id` param
+      const selectedBreed = id
+        ? data.find(
+            (b) => b._id === id || b.id?.toString() === id.toString()
+          )
+        : data[0];
+
+      setBreed(selectedBreed || null);
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        console.error("Failed to fetch breed data:", error);
+        setBreed(null);
+      }
+    } finally {
+      if (isMounted) setLoading(false);
+    }
+  }
+
+  fetchBreedData();
+
+  return () => {
+    isMounted = false;
+    controller.abort(); 
+  };
+}, [id]);
+
 
   if (loading) {
     return (
@@ -54,7 +81,9 @@ const MainPetPage = () => {
     );
   }
 
-  const formattedDate = breed?.postDate ? new Date(breed.postDate).toLocaleDateString() : "N/A";
+  const formattedDate = breed.postDate
+    ? new Date(breed.postDate).toLocaleDateString()
+    : "N/A";
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -63,13 +92,18 @@ const MainPetPage = () => {
 
   const handleFacebookShare = () => {
     window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        window.location.href
+      )}`,
       "_blank"
     );
   };
 
   const handleWhatsAppShare = () => {
-    window.open(`https://wa.me/?text=${encodeURIComponent(window.location.href)}`, "_blank");
+    window.open(
+      `https://wa.me/?text=${encodeURIComponent(window.location.href)}`,
+      "_blank"
+    );
   };
 
   const handleReportUser = () => alert("User reported successfully.");
@@ -83,18 +117,28 @@ const MainPetPage = () => {
           <div className="pet-content">
             <div className="left-column">
               <div className="pet-header">
-                <h1 className="pet-name">{breed?.name || "N/A"}</h1>
+                <h1 className="pet-name">{breed.name}</h1>
                 <div className="pet-location">
-                  <span className="location-text">{breed?.location || "Unknown Location"}</span>
+                  <span className="location-text">
+                    {breed.location || "Unknown Location"}
+                  </span>
                 </div>
-                <div className={`status-badge ${breed?.status?.toLowerCase() || "available"}`}>
-                  {breed?.status || "Available"}
+                <div
+                  className={`status-badge ${
+                    breed.status?.toLowerCase() || "available"
+                  }`}
+                >
+                  {breed.status || "Available"}
                 </div>
               </div>
 
               <div className="pet-image-section">
-                <div className={`pet-image-placeholder ${breed?.images?.length > 0 ? "has-image" : ""}`}>
-                  {breed?.images?.length > 0 ? (
+                <div
+                  className={`pet-image-placeholder ${
+                    breed.images && breed.images.length > 0 ? "has-image" : ""
+                  }`}
+                >
+                  {breed.images && breed.images.length > 0 ? (
                     <img src={breed.images[0]} alt={breed.name} className="pet-image" />
                   ) : (
                     <span>No Image</span>
@@ -102,23 +146,36 @@ const MainPetPage = () => {
                   <Heart className="heart-icon" />
                 </div>
                 <div className="price-section">
-                  <div className="price-tag">Price: ₹{breed?.price?.toLocaleString() || "N/A"}</div>
+                  <div className="price-tag">
+                    Price: ₹{breed.price ? breed.price.toLocaleString() : "N/A"}
+                  </div>
                   <div className="post-date">Post Date : {formattedDate}</div>
                 </div>
               </div>
 
               <div className="identifications">
                 <h3>Identifications</h3>
-                <p>{breed?.identifications || "No identification info"}</p>
+                <p>{breed.identifications || "No identification info"}</p>
               </div>
 
               <div className="breed-info">
-                <h3>{breed?.name} Breed Information</h3>
+                <h3>{breed.name} Breed Information</h3>
                 <div className="breed-details">
-                  {["origin", "idealSpace", "coatLength", "lifeExpectancy", "coatType", "idealWeather"].map((key) => (
+                  {[
+                    "origin",
+                    "idealSpace",
+                    "coatLength",
+                    "lifeExpectancy",
+                    "coatType",
+                    "idealWeather",
+                  ].map((key) => (
                     <div className="breed-item" key={key}>
-                      <span className="breed-label">{key.replace(/([A-Z])/g, " $1")}</span>
-                      <span className="breed-value">{breed?.breedInformation?.[key] || "N/A"}</span>
+                      <span className="breed-label">
+                        {key.replace(/([A-Z])/g, " $1")}
+                      </span>
+                      <span className="breed-value">
+                        {breed.breedInformation?.[key] || "N/A"}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -128,11 +185,11 @@ const MainPetPage = () => {
                 <h3>Owner Details</h3>
                 <div className="owner-info">
                   <div className="owner-name-location">
-                    <div className="owner-name">{breed?.ownerDetails?.ownerName || "Unknown"}</div>
-                    <div className="owner-location">{breed?.ownerDetails?.location || "N/A"}</div>
+                    <div className="owner-name">{breed.ownerDetails?.ownerName || "Unknown"}</div>
+                    <div className="owner-location">{breed.ownerDetails?.location || "N/A"}</div>
                   </div>
                   <div className="verification-badges">
-                    {breed?.ownerDetails?.verified ? (
+                    {breed.ownerDetails?.verified ? (
                       <span className="verified-badge verified">Verified</span>
                     ) : (
                       <span className="verified-badge unverified">Unverified</span>
@@ -159,10 +216,10 @@ const MainPetPage = () => {
               <div className="basic-info">
                 <h3>Basic Information</h3>
                 <div className="info-grid">
-                  {["petType", "age", "gender", "color", "size", "petVariety"].map((key) => (
+                  {["petType","age","gender","color","size","petVariety"].map((key) => (
                     <div className="info-item" key={key}>
                       <span className="info-label">{key.replace(/([A-Z])/g, " $1")}</span>
-                      <span className="info-value">{breed?.basicInfo?.[key] || "N/A"}</span>
+                      <span className="info-value">{breed.basicInfo?.[key] || "N/A"}</span>
                     </div>
                   ))}
                 </div>
@@ -171,28 +228,29 @@ const MainPetPage = () => {
               <div className="additional-info">
                 <h3>Additional Information</h3>
                 <div className="additional-items">
-                  {breed?.additionalInfo?.vaccinated && (
+                  {breed.additionalInfo?.vaccinated && (
                     <div className="additional-item">
                       <Check className="check-icon" />
                       <span>Vaccinated</span>
                     </div>
                   )}
-                  {breed?.additionalInfo?.transportServiceIncluded && (
+                  {breed.additionalInfo?.transportServiceIncluded && (
                     <div className="additional-item">
                       <Check className="check-icon" />
                       <span>Transport service included</span>
                     </div>
                   )}
-                  {!breed?.additionalInfo?.vaccinated && !breed?.additionalInfo?.transportServiceIncluded && (
-                    <p className="no-additional">No additional information available.</p>
-                  )}
+                  {!breed.additionalInfo?.vaccinated &&
+                    !breed.additionalInfo?.transportServiceIncluded && (
+                      <p className="no-additional">No additional information available.</p>
+                    )}
                 </div>
               </div>
 
               <div className="about-section">
-                <h3>About {breed?.name}</h3>
+                <h3>About {breed.name}</h3>
                 <div className="about-content">
-                  <p>{breed?.description || "No description available."}</p>
+                  <p>{breed.description || "No description available."}</p>
                 </div>
               </div>
 
@@ -205,6 +263,7 @@ const MainPetPage = () => {
         </div>
       </div>
 
+      {/* Show similar breeds below */}
       <SimilarBreeds />
     </>
   );
